@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 import sqlite3
-from database import get_db
-from security.sql_injection_detector import detect_sql_injection
-from security.attack_logger import log_attack
+from security_lab.database import get_db
+from security_lab.security.sql_injection_detector import detect_sql_injection
+from security_lab.security.attack_logger import log_attack
 
 router = APIRouter()
 

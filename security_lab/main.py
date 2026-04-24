@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -5,8 +7,10 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from database import init_db
-from routers import auth, lab_sql, lab_xss, lab_csrf, dashboard
+from security_lab.database import init_db
+from security_lab.routers import auth, lab_sql, lab_xss, lab_csrf, dashboard
+
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(title="Web Security Lab", version="1.0.0")
 
@@ -18,8 +22,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/static", StaticFiles(directory="security_lab/static"), name="static")
-templates = Jinja2Templates(directory="security_lab/templates")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(lab_sql.router, prefix="/lab/sql", tags=["sql-lab"])
@@ -39,4 +43,4 @@ async def index(request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("security_lab.main:app", host="0.0.0.0", port=8000, reload=True)

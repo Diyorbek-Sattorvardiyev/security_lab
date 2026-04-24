@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
-from database import get_db
-from security.csrf_protection import generate_csrf_token, validate_csrf_token, get_token_for_session
-from security.attack_logger import log_attack
 import secrets
+from security_lab.database import get_db
+from security_lab.security.csrf_protection import generate_csrf_token, validate_csrf_token, get_token_for_session
+from security_lab.security.attack_logger import log_attack
 
 router = APIRouter()
 

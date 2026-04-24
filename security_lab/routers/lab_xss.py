@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
-from database import get_db
-from security.xss_filter import sanitize_input, is_xss_payload
-from security.attack_logger import log_attack
+from security_lab.database import get_db
+from security_lab.security.xss_filter import sanitize_input, is_xss_payload
+from security_lab.security.attack_logger import log_attack
 
 router = APIRouter()
 

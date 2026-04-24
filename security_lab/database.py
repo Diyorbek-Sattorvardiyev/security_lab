@@ -1,7 +1,7 @@
 import sqlite3
-import os
+from pathlib import Path
 
-DB_PATH = "security_lab.db"
+DB_PATH = Path(__file__).resolve().parent.parent / "security_lab.db"
 
 
 def get_db():

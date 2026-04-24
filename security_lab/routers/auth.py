@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Request, Response, HTTPException
 from fastapi.responses import JSONResponse
 import bcrypt
-from database import get_db
-from schemas import UserRegister, UserLogin
 import secrets
+from security_lab.database import get_db
+from security_lab.schemas import UserRegister, UserLogin
 
 router = APIRouter()
 

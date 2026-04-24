@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
-from security.attack_logger import get_attack_stats
-from database import get_db
-from security.sql_injection_detector import get_risk_level
+from security_lab.security.attack_logger import get_attack_stats
+from security_lab.database import get_db
+from security_lab.security.sql_injection_detector import get_risk_level
 
 router = APIRouter()
 
