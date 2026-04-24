@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veb Xavfsizlik Laboratoriyasi</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanline"></div>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></svg></span>
+      <span>XAV<strong>LAB</strong></span>
+    </div>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Bosh sahifa</a>
+      <a href="/static/sql_lab.html" class="nav-link">SQL Lab</a>
+      <a href="/static/xss_lab.html" class="nav-link">XSS Lab</a>
+      <a href="/static/csrf_lab.html" class="nav-link">CSRF Lab</a>
+      <a href="/static/dashboard.html" class="nav-link">Boshqaruv paneli</a>
+    </div>
+    <div class="nav-auth" id="navAuth">
+      <button class="btn-ghost" onclick="openModal('loginModal')">Kirish</button>
+      <button class="btn-primary" onclick="openModal('registerModal')">Ro'yxatdan o'tish</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="grid-overlay"></div>
+        <div class="glow-orb glow-1"></div>
+        <div class="glow-orb glow-2"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          OWASP Top 10 • Interaktiv Xavfsizlik Laboratoriyasi
+        </div>
+        <h1 class="hero-title">
+          <span class="line1">Hujum.</span>
+          <span class="line2">Aniqlash.</span>
+          <span class="line3">Himoya.</span>
+        </h1>
+        <p class="hero-desc">
+          Nazorat ostidagi muhitda real dunyo veb zaifliklarini o'rganing.
+          SQL Injection, XSS va CSRF ni amaliy mashqlar orqali o'zlashtirilg.
+        </p>
+        <div class="hero-actions">
+          <a href="/static/sql_lab.html" class="btn-cta">Boshlash →</a>
+          <a href="/static/dashboard.html" class="btn-outline">Boshqaruv paneli</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Hujum modullari</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">OWASP</span>
+            <span class="stat-label">Standartlar</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Amaliy</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">hujum_simulyatsiya.py</span>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">python hujum.py --modul sql</span></div>
+            <div class="term-line term-output">[*] SQL Injection tekshirilmoqda...</div>
+            <div class="term-line term-output">[*] Yuklanma: ' OR '1'='1</div>
+            <div class="term-line term-success">[+] ZAIFLIK TOPILDI!</div>
+            <div class="term-line term-output">[*] Autentifikatsiya muvaffaqiyatli chetlab o'tildi</div>
+            <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd term-blink">_</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="modules-section">
+      <div class="section-header">
+        <span class="section-tag">// HUJUM MODULLARI</span>
+        <h2>Hujum vektorini tanlang</h2>
+      </div>
+      <div class="modules-grid">
+        <a href="/static/sql_lab.html" class="module-card card-sql">
+          <div class="card-number">01</div>
+          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+          <h3>SQL Injection</h3>
+          <p>Zararli SQL so'rovlari yordamida autentifikatsiyani chetlab o'ting va ma'lumotlar bazasini oching</p>
+          <div class="card-tags">
+            <span class="tag">Auth Bypass</span>
+            <span class="tag">Ma'lumot sizib chiqishi</span>
+          </div>
+          <div class="card-severity high">YUQORI XAVF</div>
+          <div class="card-arrow">→</div>
+        </a>
+
+        <a href="/static/xss_lab.html" class="module-card card-xss">
+          <div class="card-number">02</div>
+          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <h3>Saytlararo Skript (XSS)</h3>
+          <p>Boshqa foydalanuvchilar ko'radigan veb sahifalarga zararli skriptlar joylashtiring</p>
+          <div class="card-tags">
+            <span class="tag">Skript in'eksiyasi</span>
+            <span class="tag">Cookie o'g'irlash</span>
+          </div>
+          <div class="card-severity high">YUQORI XAVF</div>
+          <div class="card-arrow">→</div>
+        </a>
+
+        <a href="/static/csrf_lab.html" class="module-card card-csrf">
+          <div class="card-number">03</div>
+          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
+          <h3>CSRF Hujumi</h3>
+          <p>Autentifikatsiyadan o'tgan foydalanuvchilarni zararli saytlardan istalmagan amallarni bajarishga majbur qiling</p>
+          <div class="card-tags">
+            <span class="tag">Sessiya o'g'irlash</span>
+            <span class="tag">So'rov soxtalashtirish</span>
+          </div>
+          <div class="card-severity medium">O'RTA XAVF</div>
+          <div class="card-arrow">→</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <h4>Real vaqt aniqlash</h4>
+          <p>Hujumlar naqshlarni moslashtirish bilan real vaqtda aniqlanadi va qayd etiladi</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h4>Himoya taqqoslash</h4>
+          <p>Zaif va xavfsiz implementatsiyalarni yonma-yon ko'ring</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <h4>Hujum tahlili</h4>
+          <p>Hujum statistikasi va xavfsizlik reytingi bilan boshqaruv paneli</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+          <h4>Xavfsizlik reytingi</h4>
+          <p>Veb xavfsizlik tushunchalarini o'zlashtirish darajangizni baholang</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Kirish modali -->
+  <div class="modal" id="loginModal">
+    <div class="modal-overlay" onclick="closeModal('loginModal')"></div>
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+      <h2>Kirish</h2>
+      <p class="modal-sub">Demo: admin / admin123</p>
+      <div class="form-group">
+        <label>Foydalanuvchi nomi</label>
+        <input type="text" id="loginUser" placeholder="Foydalanuvchi nomini kiriting">
+      </div>
+      <div class="form-group">
+        <label>Parol</label>
+        <input type="password" id="loginPass" placeholder="Parolni kiriting">
+      </div>
+      <div id="loginMsg" class="msg-area"></div>
+      <button class="btn-primary full" onclick="doLogin()">Kirish →</button>
+    </div>
+  </div>
+
+  <!-- Ro'yxatdan o'tish modali -->
+  <div class="modal" id="registerModal">
+    <div class="modal-overlay" onclick="closeModal('registerModal')"></div>
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+      <h2>Ro'yxatdan o'tish</h2>
+      <div class="form-group">
+        <label>Foydalanuvchi nomi</label>
+        <input type="text" id="regUser" placeholder="Foydalanuvchi nomini tanlang">
+      </div>
+      <div class="form-group">
+        <label>Elektron pochta</label>
+        <input type="email" id="regEmail" placeholder="sizning@email.com">
+      </div>
+      <div class="form-group">
+        <label>Parol</label>
+        <input type="password" id="regPass" placeholder="Kamida 6 ta belgi">
+      </div>
+      <div id="regMsg" class="msg-area"></div>
+      <button class="btn-primary full" onclick="doRegister()">Hisob yaratish →</button>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
