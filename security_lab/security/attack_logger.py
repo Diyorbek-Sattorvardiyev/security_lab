@@ -1,5 +1,5 @@
-from database import get_db
 from datetime import datetime
+from security_lab.database import get_db
 
 
 def log_attack(ip_address: str, attack_type: str, payload: str, status: str, endpoint: str = ""):
