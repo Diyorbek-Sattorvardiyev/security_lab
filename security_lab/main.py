@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from security_lab.database import init_db
-from security_lab.routers import auth, lab_sql, lab_xss, lab_csrf, dashboard
+from security_lab.routers import admin, auth, blog, lab_sql, lab_xss, lab_csrf, dashboard
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -30,6 +30,8 @@ app.include_router(lab_sql.router, prefix="/lab/sql", tags=["sql-lab"])
 app.include_router(lab_xss.router, prefix="/lab/xss", tags=["xss-lab"])
 app.include_router(lab_csrf.router, prefix="/lab/csrf", tags=["csrf-lab"])
 app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
+app.include_router(blog.router, prefix="/blog", tags=["blog"])
+app.include_router(admin.router, prefix="/admin/api", tags=["admin"])
 
 
 @app.on_event("startup")
@@ -39,6 +41,41 @@ async def startup():
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/security-lab", response_class=HTMLResponse)
+async def security_lab_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/blog", response_class=HTMLResponse)
+async def blog_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/chat", response_class=HTMLResponse)
+async def chat_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/detail", response_class=HTMLResponse)
+async def detail_page(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 

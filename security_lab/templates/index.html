@@ -3,209 +3,1218 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veb Xavfsizlik Laboratoriyasi</title>
-  <link rel="stylesheet" href="/static/css/main.css">
+  <title>SecureBlog - Zamonaviy blog va xavfsizlik test laboratoriyasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page: #edf4f8;
+      --paper: #ffffff;
+      --nav: #e8f6fd;
+      --ink: #0d2b45;
+      --muted: #5d7da0;
+      --blue: #4aa8e8;
+      --blue-dark: #3d6685;
+      --line: #dfeaf2;
+      --shadow: 0 12px 30px rgba(54, 87, 112, .16);
+      --radius: 7px;
+      --mono: "Space Mono", monospace;
+      --sans: "Poppins", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.65;
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+    .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+
+    /* NAV */
+    .topbar {
+      height: 78px;
+      background: var(--nav);
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(42, 76, 102, .04);
+    }
+    .nav-inner {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 30px;
+      border: 5px solid #4868f0;
+      border-left: 0;
+      border-radius: 0 999px 999px 0;
+      position: relative;
+    }
+    .brand-mark::before, .brand-mark::after {
+      content: "";
+      position: absolute;
+      left: -13px;
+      height: 5px;
+      border-radius: 999px;
+      background: #4868f0;
+    }
+    .brand-mark::before { width: 24px; top: 4px; }
+    .brand-mark::after { width: 18px; bottom: 4px; }
+    .brand small { display: block; color: #4868f0; font-size: .52rem; font-weight: 600; letter-spacing: 0; }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    .nav-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 8px 18px rgba(54, 87, 112, .12);
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 999px;
+      transition: transform .2s, opacity .2s;
+    }
+    .topbar.menu-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .topbar.menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    .topbar.menu-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-menu button, .dropdown > button, .nav-doc {
+      border: 0;
+      background: transparent;
+      color: #001d36;
+      font-family: var(--mono);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .28em;
+      padding: 8px 0;
+      text-decoration: none;
+    }
+    .nav-menu button:hover, .dropdown > button:hover, .nav-doc:hover { color: var(--blue); }
+    .dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      min-width: 180px;
+      padding: 10px;
+      display: none;
+      background: var(--paper);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .dropdown:hover .dropdown-menu { display: grid; }
+    .dropdown-menu button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 5px;
+      color: var(--ink);
+      font-size: .9rem;
+    }
+    .dropdown-menu button:hover { background: #eef6fb; color: var(--blue); }
+
+    /* COMMON */
+    .view { min-height: calc(100vh - 78px); }
+    .section-pad { padding: 70px 0; }
+    .section-title {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+    .section-title h1, .section-title h2 {
+      font-size: clamp(2.6rem, 6vw, 4.3rem);
+      font-weight: 400;
+      letter-spacing: .14em;
+      line-height: 1.1;
+    }
+    .section-title h2 { font-size: clamp(2rem, 4vw, 3rem); }
+    .title-line {
+      width: 82px;
+      height: 4px;
+      background: var(--blue);
+      margin: 18px auto 0;
+    }
+    .btn-blue, .btn-outline, .btn-danger, .mini-btn {
+      min-height: 40px;
+      border-radius: 6px;
+      padding: 0 18px;
+      border: 0;
+      background: var(--blue);
+      color: #fff;
+      font-family: var(--mono);
+      letter-spacing: .28em;
+      font-size: .72rem;
+      text-transform: uppercase;
+      box-shadow: 0 5px 12px rgba(74, 168, 232, .28);
+    }
+    .btn-outline {
+      background: var(--paper);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: none;
+    }
+    .btn-danger { background: #ef6679; }
+    .mini-btn {
+      min-height: 30px;
+      padding: 0 12px;
+      letter-spacing: .14em;
+      font-size: .64rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      border: 0;
+      outline: none;
+      border-radius: 7px;
+      background: #eef4f8;
+      color: var(--ink);
+      padding: 14px 18px;
+      font-family: var(--mono);
+      letter-spacing: .25em;
+      text-transform: uppercase;
+    }
+    textarea { min-height: 140px; resize: vertical; }
+
+    /* HOME */
+    .hero-home {
+      background: #fff;
+      padding: 72px 0;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 82px;
+      align-items: center;
+    }
+    .hero-image {
+      border: 5px solid #7bc5f5;
+      padding: 36px 0 0 36px;
+      border-radius: 7px;
+    }
+    .hero-image img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 7px;
+      display: block;
+      transform: translate(34px, -36px);
+      box-shadow: var(--shadow);
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.1rem, 4vw, 3rem);
+      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: .16em;
+      margin-bottom: 18px;
+    }
+    .hero-copy p { color: var(--muted); margin-bottom: 22px; font-size: 1rem; }
+    .home-band { background: #f0f6fa; padding: 70px 0; }
+    .popular-mosaic {
+      display: grid;
+      grid-template-columns: 1fr 1.55fr;
+      gap: 14px;
+      margin-top: -18px;
+    }
+    .popular-mosaic img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 3px; }
+    .mosaic-right { display: grid; gap: 14px; }
+    .mosaic-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .categories-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 50px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cat-icon { font-size: 2rem; margin-bottom: 12px; color: #000; }
+    .categories-row h3 {
+      color: #2e6eff;
+      font-family: var(--mono);
+      letter-spacing: .4em;
+      font-size: .72rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .categories-row p { color: var(--muted); font-size: .83rem; }
+
+    /* BLOG */
+    .blog-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 28px;
+      align-items: start;
+    }
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    .post-card, .side-card, .detail-card, .comment-card, .auth-card, .admin-card {
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      border-radius: 4px;
+    }
+    .post-card { overflow: hidden; cursor: pointer; transition: transform .2s; }
+    .post-card:hover { transform: translateY(-4px); }
+    .post-card img { width: 100%; aspect-ratio: 16/11; object-fit: cover; display: block; }
+    .post-body { padding: 22px 22px 18px; }
+    .post-row { display: flex; justify-content: space-between; gap: 14px; align-items: center; }
+    .post-title {
+      color: #2867ff;
+      font-family: var(--mono);
+      letter-spacing: .28em;
+      font-size: .86rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .post-cat { color: #adc0d0; font-size: .82rem; }
+    .post-body p { color: var(--muted); font-size: .9rem; margin-bottom: 16px; }
+    .post-foot { display: flex; justify-content: space-between; align-items: center; color: var(--blue); font-size: .82rem; }
+    .post-date {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: #cbeeff;
+      color: var(--ink);
+      padding: 6px 10px;
+    }
+    .post-img-wrap { position: relative; }
+    .category-pills { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 24px; }
+    .category-pills button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 13px;
+      background: #fff;
+      color: var(--muted);
+      box-shadow: 0 5px 16px rgba(54, 87, 112, .09);
+    }
+    .category-pills button.active { background: var(--blue); color: #fff; }
+    .side-card { padding: 20px; margin-bottom: 28px; text-align: center; }
+    .side-card h3 {
+      font-weight: 400;
+      font-family: var(--mono);
+      letter-spacing: .32em;
+      font-size: .9rem;
+      margin-bottom: 14px;
+    }
+    .side-line { width: 72px; height: 3px; background: var(--blue); margin: 0 auto 18px; }
+    .sidebar-profile img {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 8px;
+      display: block;
+      background: #000;
+    }
+    .sidebar-profile p { color: var(--muted); font-size: .88rem; margin: 12px 0; }
+    .search-box { display: flex; gap: 8px; }
+    .search-box input { min-width: 0; }
+    .mini-post { display: grid; grid-template-columns: 78px 1fr; gap: 12px; text-align: left; margin: 14px 0; }
+    .mini-post img { width: 78px; height: 52px; object-fit: cover; }
+    .mini-post b { display: block; font-size: .84rem; color: #000; }
+    .mini-post span { color: var(--muted); font-size: .72rem; }
+    .category-list { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; text-align: left; }
+    .category-list button {
+      width: 100%;
+      border: 0;
+      background: #fff;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      color: #2867ff;
+    }
+    .category-list button + button { border-top: 1px solid var(--line); }
+    .count { background: #296cff; color: #fff; border-radius: 999px; padding: 0 7px; }
+    .all-post-btn { text-align: center; margin: 42px 0 56px; }
+    .recent-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+
+    /* DETAIL */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 28px;
+      align-items: start;
+    }
+    .detail-card { padding: 20px; }
+    .detail-card img { width: 100%; max-height: 430px; object-fit: cover; display: block; margin-bottom: 24px; }
+    .detail-card h1 {
+      font-size: clamp(2.3rem, 5vw, 4rem);
+      line-height: 1.06;
+      font-weight: 400;
+      letter-spacing: .08em;
+      margin: 14px 0;
+    }
+    .detail-card p, .markdown-content p { color: var(--muted); margin: 14px 0; }
+    .markdown-content pre { background: #eef4f8; padding: 14px; overflow: auto; color: var(--ink); }
+    .reaction-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+    .comment-form { padding: 34px 40px; margin-top: 34px; }
+    .comment-form h2 { font-weight: 400; font-family: var(--mono); letter-spacing: .22em; margin-bottom: 20px; }
+    .comment-list { display: grid; gap: 26px; margin-top: 34px; }
+    .comment-card { padding: 26px 40px; color: var(--muted); }
+    .comment-card b { color: var(--ink); font-size: .86rem; }
+
+    /* ABOUT CONTACT USER */
+    .about-text { max-width: 980px; margin: 0 auto; color: var(--muted); font-size: 1rem; }
+    .about-text p + p { margin-top: 18px; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 70px;
+      align-items: start;
+    }
+    .contact-info { padding-top: 40px; }
+    .contact-info h3 {
+      color: var(--blue);
+      font-family: var(--mono);
+      letter-spacing: .32em;
+      font-size: .9rem;
+      font-weight: 400;
+      margin: 24px 0 8px;
+    }
+    .contact-info p { color: var(--muted); font-size: 1.05rem; }
+    .contact-card { padding: 28px 32px; }
+    .contact-card h2 { text-align: center; font-weight: 400; font-family: var(--mono); letter-spacing: .28em; margin-bottom: 24px; color: var(--muted); }
+    .contact-card input, .contact-card textarea { margin-bottom: 16px; }
+    .user-hero {
+      display: grid;
+      grid-template-columns: .95fr 1fr;
+      gap: 90px;
+      align-items: center;
+    }
+    .user-photo-frame {
+      border: 4px solid #8fd0fb;
+      border-radius: 6px;
+      padding: 34px 0 0 34px;
+    }
+    .user-photo-frame img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 6px;
+      transform: translate(34px, -34px);
+      box-shadow: var(--shadow);
+    }
+    .profile-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .profile-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .profile-actions input { display: none; }
+
+    /* TEST LAB */
+    .lab-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 34px; }
+    .lab-stat { padding: 22px; background: #fff; box-shadow: var(--shadow); border-left: 4px solid var(--blue); }
+    .lab-stat span { color: var(--muted); }
+    .lab-stat b { display: block; font-size: 2rem; margin: 6px 0; }
+    .lab-grid { display: grid; gap: 22px; }
+    .lab-card { padding: 28px; background: #fff; box-shadow: var(--shadow); }
+    .lab-card h3 { font-weight: 500; letter-spacing: .06em; margin-bottom: 10px; }
+    .lab-card p { color: var(--muted); margin-bottom: 14px; }
+    .lab-card textarea { margin-bottom: 12px; font-family: var(--mono); text-transform: none; letter-spacing: 0; }
+    .toast { margin-top: 18px; padding: 14px 16px; background: #fff; box-shadow: var(--shadow); color: var(--ink); }
+    .toast.danger { border-left: 4px solid #ef6679; }
+    .toast.success { border-left: 4px solid #44c995; }
+
+    /* ADMIN */
+    .admin-layout { display: grid; grid-template-columns: 230px 1fr; gap: 26px; }
+    .admin-side { background: #fff; box-shadow: var(--shadow); padding: 18px; height: fit-content; }
+    .admin-side button { width: 100%; border: 0; background: #eef4f8; color: var(--ink); padding: 12px; margin-bottom: 8px; text-align: left; }
+    .admin-main { display: grid; gap: 20px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .stat-card { background: #fff; box-shadow: var(--shadow); padding: 18px; }
+    .stat-card span { color: var(--muted); display: block; }
+    .stat-card b { font-size: 2rem; }
+    .analytics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .chart-card { background: #fff; box-shadow: var(--shadow); padding: 18px; }
+    .bar-row { display: grid; grid-template-columns: 90px 1fr 30px; gap: 8px; align-items: center; color: var(--muted); font-size: .82rem; margin: 8px 0; }
+    .bar-track { height: 9px; background: #eef4f8; border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--blue); }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    table { min-width: 760px; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .table-wrap { overflow-x: auto; }
+    .user-row { display: flex; gap: 10px; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding: 12px 0; flex-wrap: wrap; }
+    .badge { display: inline-flex; padding: 3px 9px; border-radius: 999px; background: #e6f5fd; color: var(--blue); font-size: .76rem; }
+    .badge.blocked { background: #ffe7eb; color: #dc4960; }
+
+    /* MODALS FOOTER */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(12, 38, 58, .26);
+      z-index: 300;
+    }
+    .modal.active { display: flex; }
+    .modal-box {
+      position: relative;
+      width: min(560px, 100%);
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+      padding: 30px;
+      display: grid;
+      gap: 14px;
+    }
+    .modal-box.wide { width: min(860px, 100%); }
+    .modal-close { position: absolute; right: 14px; top: 14px; border: 0; background: transparent; font-size: 1.2rem; }
+    .editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .markdown-preview { min-height: 170px; background: #eef4f8; padding: 14px; overflow: auto; color: var(--muted); }
+    .upload-box { display: grid; gap: 5px; padding: 16px; border: 1px dashed var(--blue); color: var(--muted); cursor: pointer; }
+    .upload-box input { display: none; }
+    .upload-preview { width: 100%; max-height: 230px; object-fit: cover; }
+    .newsletter { background: var(--blue-dark); color: #fff; padding: 48px 0; margin-top: 70px; }
+    .newsletter-grid { display: grid; grid-template-columns: 1fr 520px; gap: 40px; align-items: center; }
+    .newsletter h2 { font-weight: 400; letter-spacing: .18em; }
+    .newsletter p { color: #bfe1f8; }
+    .newsletter form { display: flex; gap: 4px; }
+    .footer { background: #202020; color: #5f88a8; text-align: center; padding: 46px 0; }
+    .socials { color: var(--blue); font-size: 1.4rem; letter-spacing: .6em; margin-bottom: 22px; }
+
+    @media (max-width: 960px) {
+      .topbar { height: 72px; }
+      .nav-inner { position: relative; }
+      .nav-toggle { display: inline-flex; }
+      .nav-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 14px);
+        display: none;
+        padding: 16px;
+        background: var(--paper);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        align-items: stretch;
+        gap: 8px;
+        flex-direction: column;
+        max-height: calc(100vh - 92px);
+        overflow-y: auto;
+      }
+      .topbar.menu-open .nav-menu { display: flex; }
+      .nav-menu button, .dropdown > button, .nav-doc {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        text-align: left;
+        letter-spacing: .14em;
+        display: flex;
+        align-items: center;
+      }
+      .dropdown-menu {
+        position: static;
+        display: grid;
+        min-width: 0;
+        padding: 6px 0 6px 16px;
+        box-shadow: none;
+        background: #f6fbff;
+        border-radius: 6px;
+      }
+      .hero-grid, .blog-layout, .detail-layout, .contact-grid, .user-hero, .admin-layout, .newsletter-grid { grid-template-columns: 1fr; }
+      .post-grid, .recent-grid, .profile-grid, .analytics-grid, .stats-grid { grid-template-columns: 1fr; }
+      .lab-stats, .categories-row { grid-template-columns: 1fr; }
+      .hero-image img, .user-photo-frame img { transform: none; }
+      .hero-image, .user-photo-frame { padding: 14px; }
+      .hero-grid { gap: 34px; }
+      .blog-layout aside, .detail-layout aside { order: -1; }
+      .sidebar-profile img { width: min(220px, 70vw); height: min(220px, 70vw); }
+      .newsletter-grid { gap: 22px; }
+      .admin-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .admin-side button { margin-bottom: 0; text-align: center; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(100% - 22px, 1120px); }
+      .section-pad { padding: 44px 0; }
+      .nav-menu { gap: 14px; }
+      .nav-menu button, .dropdown > button, .nav-doc { letter-spacing: .12em; }
+      .popular-mosaic, .mosaic-bottom, .editor-grid { grid-template-columns: 1fr; }
+      .newsletter form { flex-direction: column; }
+      .section-title { margin-bottom: 34px; }
+      .section-title h1, .section-title h2 { letter-spacing: .06em; }
+      .hero-home { padding: 42px 0; }
+      .home-band { padding: 46px 0; }
+      .hero-copy h1 { letter-spacing: .06em; }
+      .post-row, .post-foot, .search-box, .reaction-row, .user-row { align-items: stretch; flex-direction: column; }
+      .post-body, .detail-card, .comment-card, .comment-form, .lab-card, .contact-card { padding: 20px; }
+      .post-title, .side-card h3, .comment-form h2, input, textarea, select, .btn-blue, .btn-outline, .btn-danger, .mini-btn {
+        letter-spacing: .12em;
+      }
+      .btn-blue, .btn-outline, .btn-danger, .mini-btn { width: 100%; justify-content: center; }
+      .category-pills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .category-pills button { min-height: 40px; }
+      .admin-side { grid-template-columns: 1fr; }
+      .modal { align-items: flex-start; overflow-y: auto; }
+      .modal-box { padding: 24px 18px; margin-top: 18px; }
+      .socials { letter-spacing: .25em; }
+    }
+    @media (max-width: 380px) {
+      .brand span:last-child { font-size: .9rem; }
+      .brand small { font-size: .46rem; }
+      .brand-mark { width: 30px; height: 26px; border-width: 4px; }
+      .section-title h1 { font-size: 2.15rem; }
+      .section-title h2 { font-size: 1.75rem; }
+      .category-pills { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div class="scanline"></div>
-  <nav class="navbar">
-    <div class="nav-brand">
-      <span class="brand-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/></svg></span>
-      <span>XAV<strong>LAB</strong></span>
-    </div>
-    <div class="nav-links">
-      <a href="/" class="nav-link active">Bosh sahifa</a>
-      <a href="/static/sql_lab.html" class="nav-link">SQL Lab</a>
-      <a href="/static/xss_lab.html" class="nav-link">XSS Lab</a>
-      <a href="/static/csrf_lab.html" class="nav-link">CSRF Lab</a>
-      <a href="/static/dashboard.html" class="nav-link">Boshqaruv paneli</a>
-    </div>
-    <div class="nav-auth" id="navAuth">
-      <button class="btn-ghost" onclick="openModal('loginModal')">Kirish</button>
-      <button class="btn-primary" onclick="openModal('registerModal')">Ro'yxatdan o'tish</button>
+  <nav class="topbar">
+    <div class="nav-inner">
+      <a class="brand" href="/" onclick="event.preventDefault(); routeTo('home')">
+        <span class="brand-mark"></span>
+        <span>SECUREBLOG<small>Xavfsizlik mumkin</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Menyuni ochish" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+      <div class="nav-menu">
+        <button onclick="routeTo('home')">Bosh sahifa</button>
+        <button onclick="routeTo('about')">Haqida</button>
+        <button onclick="routeTo('contact')">Aloqa</button>
+        <button onclick="routeTo('lab')">Test laboratoriyasi</button>
+        <a class="nav-doc" href="/static/docs/SecureBlog_foydalanish_qollanma.docx" download>Qo‘llanma</a>
+        <div class="dropdown">
+          <button>Blog⌄</button>
+          <div class="dropdown-menu">
+            <button onclick="routeTo('blog')">Barcha postlar</button>
+            <button onclick="setCategory('Security')">Xavfsizlik</button>
+            <button onclick="setCategory('Tutorial')">Darslik</button>
+            <button class="auth-only" onclick="setDrafts()">Qoralamalar</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button>Foydalanuvchi⌄</button>
+          <div class="dropdown-menu">
+            <button class="guest-only" onclick="openModal('loginModal')">Kirish</button>
+            <button class="guest-only" onclick="openModal('registerModal')">Ro‘yxatdan o‘tish</button>
+            <button class="auth-only" onclick="routeTo('profile')">Profil</button>
+            <button class="auth-only" onclick="routeTo('chat')">Chat</button>
+            <button class="admin-only" onclick="routeTo('admin')">Admin</button>
+            <button class="auth-only" onclick="logout()">Chiqish</button>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
   <main>
-    <section class="hero">
-      <div class="hero-bg">
-        <div class="grid-overlay"></div>
-        <div class="glow-orb glow-1"></div>
-        <div class="glow-orb glow-2"></div>
-      </div>
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          OWASP Top 10 • Interaktiv Xavfsizlik Laboratoriyasi
-        </div>
-        <h1 class="hero-title">
-          <span class="line1">Hujum.</span>
-          <span class="line2">Aniqlash.</span>
-          <span class="line3">Himoya.</span>
-        </h1>
-        <p class="hero-desc">
-          Nazorat ostidagi muhitda real dunyo veb zaifliklarini o'rganing.
-          SQL Injection, XSS va CSRF ni amaliy mashqlar orqali o'zlashtirilg.
-        </p>
-        <div class="hero-actions">
-          <a href="/static/sql_lab.html" class="btn-cta">Boshlash →</a>
-          <a href="/static/dashboard.html" class="btn-outline">Boshqaruv paneli</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-num">3</span>
-            <span class="stat-label">Hujum modullari</span>
+    <section id="homeView" class="view">
+      <div class="hero-home">
+        <div class="wrap hero-grid">
+          <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80" alt="Blog manzarasi">
           </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">OWASP</span>
-            <span class="stat-label">Standartlar</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">100%</span>
-            <span class="stat-label">Amaliy</span>
+          <div class="hero-copy">
+            <h1>Xavfsiz blog yuritishni qanday o‘rganish mumkin?</h1>
+            <p>SecureBlog rasmli postlar, markdown editor, chat va xavfsizlik monitoringini bitta zamonaviy blog tajribasiga birlashtiradi.</p>
+            <p>Test laboratoriyasi orqali XSS, SQL Injection va CSRF himoyalarini amalda sinab ko‘ring.</p>
+            <button class="btn-blue" onclick="routeTo('blog')">Batafsil</button>
           </div>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="terminal-window">
-          <div class="terminal-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="terminal-title">hujum_simulyatsiya.py</span>
+
+      <div class="home-band">
+        <div class="wrap">
+          <div class="section-title"><h2>Mashhur postlar</h2><div class="title-line"></div></div>
+          <div class="popular-mosaic">
+            <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80" alt="">
+            <div class="mosaic-right">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80" alt="">
+              <div class="mosaic-bottom">
+                <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=700&q=80" alt="">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=700&q=80" alt="">
+              </div>
+            </div>
           </div>
-          <div class="terminal-body" id="terminalBody">
-            <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">python hujum.py --modul sql</span></div>
-            <div class="term-line term-output">[*] SQL Injection tekshirilmoqda...</div>
-            <div class="term-line term-output">[*] Yuklanma: ' OR '1'='1</div>
-            <div class="term-line term-success">[+] ZAIFLIK TOPILDI!</div>
-            <div class="term-line term-output">[*] Autentifikatsiya muvaffaqiyatli chetlab o'tildi</div>
-            <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd term-blink">_</span></div>
+        </div>
+      </div>
+
+      <section class="section-pad">
+        <div class="wrap">
+          <div class="section-title"><h2>Kategoriyalar</h2><div class="title-line"></div></div>
+          <div class="categories-row">
+            <article><div class="cat-icon">▣</div><h3>Jurnal</h3><p>Kundalik postlar, fikrlar va shaxsiy blog yozuvlari.</p></article>
+            <article><div class="cat-icon">♥</div><h3>Hayot tarzi</h3><p>Hayot tarzi, produktivlik va ijodiy yozuvlar.</p></article>
+            <article><div class="cat-icon">▰</div><h3>Ta’lim</h3><p>Xavfsizlik, Python, DevOps va web dasturlash darslari.</p></article>
           </div>
+        </div>
+      </section>
+
+      <section class="section-pad" style="padding-top:0">
+        <div class="wrap">
+          <div class="section-title"><h2>Barcha postlar</h2><div class="title-line"></div></div>
+          <div id="homePostGrid" class="post-grid"></div>
+          <div class="all-post-btn"><button class="btn-blue" onclick="routeTo('blog')">Barcha postlar</button></div>
+          <div class="section-title"><h2>So‘nggi postlar</h2><div class="title-line"></div></div>
+          <div id="recentPostGrid" class="recent-grid"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="aboutView" class="view hidden section-pad" style="background:#fff">
+      <div class="wrap">
+        <div class="section-title"><h1>Men haqimda</h1><div class="title-line"></div></div>
+        <div class="about-text">
+          <p>Salom, men xavfsiz web ilovalar yaratishga qiziqadigan dasturchiman. Chiroyli UI, ishonchli autentifikatsiya, CSRF himoyasi, tayyorlangan SQL so‘rovlar va XSSdan himoyalangan render bilan produkt darajasidagi blog platformalar qurishni yaxshi ko‘raman.</p>
+          <p>Bu loyiha blog, chat, rasm yuklash, admin monitoring, avtomatik bloklash va xavfsizlik test laboratoriyasi qismlarini bitta to‘liq web saytga jamlaydi.</p>
         </div>
       </div>
     </section>
 
-    <section class="modules-section">
-      <div class="section-header">
-        <span class="section-tag">// HUJUM MODULLARI</span>
-        <h2>Hujum vektorini tanlang</h2>
-      </div>
-      <div class="modules-grid">
-        <a href="/static/sql_lab.html" class="module-card card-sql">
-          <div class="card-number">01</div>
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
-          <h3>SQL Injection</h3>
-          <p>Zararli SQL so'rovlari yordamida autentifikatsiyani chetlab o'ting va ma'lumotlar bazasini oching</p>
-          <div class="card-tags">
-            <span class="tag">Auth Bypass</span>
-            <span class="tag">Ma'lumot sizib chiqishi</span>
+    <section id="contactView" class="view hidden section-pad" style="background:#fff">
+      <div class="wrap">
+        <div class="section-title"><h1>Aloqa</h1><div class="title-line"></div></div>
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h3>▸ Manzil</h3><p>Toshkent, O‘zbekiston</p>
+            <h3>✉ Elektron pochta</h3><p>secureblog@example.com</p>
+            <h3>☏ Telefon</h3><p>+998 90 000 00 00</p>
           </div>
-          <div class="card-severity high">YUQORI XAVF</div>
-          <div class="card-arrow">→</div>
-        </a>
-
-        <a href="/static/xss_lab.html" class="module-card card-xss">
-          <div class="card-number">02</div>
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-          <h3>Saytlararo Skript (XSS)</h3>
-          <p>Boshqa foydalanuvchilar ko'radigan veb sahifalarga zararli skriptlar joylashtiring</p>
-          <div class="card-tags">
-            <span class="tag">Skript in'eksiyasi</span>
-            <span class="tag">Cookie o'g'irlash</span>
-          </div>
-          <div class="card-severity high">YUQORI XAVF</div>
-          <div class="card-arrow">→</div>
-        </a>
-
-        <a href="/static/csrf_lab.html" class="module-card card-csrf">
-          <div class="card-number">03</div>
-          <div class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
-          <h3>CSRF Hujumi</h3>
-          <p>Autentifikatsiyadan o'tgan foydalanuvchilarni zararli saytlardan istalmagan amallarni bajarishga majbur qiling</p>
-          <div class="card-tags">
-            <span class="tag">Sessiya o'g'irlash</span>
-            <span class="tag">So'rov soxtalashtirish</span>
-          </div>
-          <div class="card-severity medium">O'RTA XAVF</div>
-          <div class="card-arrow">→</div>
-        </a>
+          <form class="contact-card auth-card" onsubmit="event.preventDefault(); alert('Xabaringiz qabul qilindi');">
+            <h2>Biz bilan bog‘laning</h2>
+            <input placeholder="Ism">
+            <input placeholder="Elektron pochta">
+            <textarea placeholder="Xabar"></textarea>
+            <button class="btn-blue">Yuborish</button>
+          </form>
+        </div>
       </div>
     </section>
 
-    <section class="features-section">
-      <div class="features-grid">
-        <div class="feature-item">
-          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <h4>Real vaqt aniqlash</h4>
-          <p>Hujumlar naqshlarni moslashtirish bilan real vaqtda aniqlanadi va qayd etiladi</p>
+    <section id="blogView" class="view hidden section-pad">
+      <div class="wrap">
+        <div class="section-title"><h1>Barcha postlar</h1><div class="title-line"></div></div>
+        <div class="blog-layout">
+          <div>
+            <div class="category-pills" id="categoryPills">
+              <button class="active" onclick="setCategory('', this)">Barchasi</button>
+              <button onclick="setCategory('Security', this)">Xavfsizlik</button>
+              <button onclick="setCategory('Product', this)">Mahsulot</button>
+              <button onclick="setCategory('Tutorial', this)">Darslik</button>
+              <button onclick="setCategory('DevOps', this)">DevOps</button>
+              <button class="auth-only" onclick="setDrafts(this)">Qoralamalar</button>
+            </div>
+            <div id="postGrid" class="post-grid"></div>
+            <div class="all-post-btn"><button class="btn-blue auth-only" onclick="openModal('postModal')">Yangi post</button></div>
+          </div>
+          <aside id="blogSidebar"></aside>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <h4>Himoya taqqoslash</h4>
-          <p>Zaif va xavfsiz implementatsiyalarni yonma-yon ko'ring</p>
+      </div>
+    </section>
+
+    <section id="detailView" class="view hidden section-pad">
+      <div class="wrap detail-layout">
+        <div>
+          <button class="btn-outline" onclick="routeTo('blog')">Orqaga</button>
+          <article id="postDetail" class="detail-card"></article>
+          <section class="comment-form comment-card">
+            <h2>Izoh yozing!</h2>
+            <div class="comment-composer auth-only">
+              <textarea id="commentInput" placeholder="Izoh matni"></textarea>
+              <button class="btn-blue" onclick="addComment()">Izoh yuborish</button>
+            </div>
+            <p class="guest-only">Izoh yozish uchun tizimga kiring.</p>
+          </section>
+          <div id="commentList" class="comment-list"></div>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-          <h4>Hujum tahlili</h4>
-          <p>Hujum statistikasi va xavfsizlik reytingi bilan boshqaruv paneli</p>
+        <aside id="detailSidebar"></aside>
+      </div>
+    </section>
+
+    <section id="labView" class="view hidden section-pad">
+      <div class="wrap">
+        <div class="section-title"><h1>Xavfsizlik test laboratoriyasi</h1><div class="title-line"></div></div>
+        <div class="lab-stats">
+          <div class="lab-stat"><span>Sessiya holati</span><b id="sessionStatus">Mehmon</b><small>CSRF himoyasi faol</small></div>
+          <div class="lab-stat"><span>Global xavf bali</span><b>92.4</b><small>Himoyalangan rejim</small></div>
+          <div class="lab-stat"><span>Aniqlangan loglar</span><b id="heroAttackCount">0</b><small>Avto-bloklash faol</small></div>
         </div>
-        <div class="feature-item">
-          <div class="feature-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
-          <h4>Xavfsizlik reytingi</h4>
-          <p>Veb xavfsizlik tushunchalarini o'zlashtirish darajangizni baholang</p>
+        <div class="lab-grid">
+          <article class="lab-card"><h3>XSS testi</h3><p>Script payload yuborilganda tizim bloklaydi va logga yozadi.</p><textarea id="xssPayload">&lt;script&gt;alert('XSS')&lt;/script&gt;</textarea><button class="btn-blue" onclick="runSecurityTest('XSS','xssPayload')">Testni boshlash</button></article>
+          <article class="lab-card"><h3>SQL Injection testi</h3><p>Login yoki qidiruv payloadi aniqlanadi va so‘rov bajarilmaydi.</p><textarea id="sqlPayload">' OR '1'='1</textarea><button class="btn-blue" onclick="runSecurityTest('SQL Injection','sqlPayload')">Testni boshlash</button></article>
+          <article class="lab-card"><h3>CSRF testi</h3><p>Noto‘g‘ri token bilan yuborilgan so‘rov rad etiladi.</p><textarea id="csrfPayload">invalid-csrf-token</textarea><button class="btn-danger" onclick="runCsrfTest()">Testni boshlash</button></article>
+        </div>
+        <div id="labResult" class="toast hidden"></div>
+      </div>
+    </section>
+
+    <section id="chatView" class="view hidden section-pad">
+      <div class="wrap">
+        <div class="section-title"><h1>Chat</h1><div class="title-line"></div></div>
+        <div class="auth-card" style="padding:24px">
+          <div id="chatMessages" style="height:420px;overflow:auto;display:grid;gap:12px;margin-bottom:16px"></div>
+          <div class="auth-only" style="display:flex;gap:10px"><input id="chatInput" placeholder="Xabar" onkeydown="if(event.key==='Enter') sendChat()"><button class="btn-blue" onclick="sendChat()">Yuborish</button></div>
+          <p class="guest-only">Chat uchun tizimga kiring. Demo: <b>user / user123</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="profileView" class="view hidden section-pad" style="background:#fff">
+      <div class="wrap">
+        <div id="profileContent"></div>
+      </div>
+    </section>
+
+    <section id="adminView" class="view hidden section-pad">
+      <div class="wrap admin-layout">
+        <aside class="admin-side">
+          <button onclick="adminTab('dashboard')">Boshqaruv paneli</button>
+          <button onclick="adminTab('logs')">Hujum loglari</button>
+          <button onclick="adminTab('blocked')">Bloklanganlar</button>
+          <button onclick="adminTab('users')">Foydalanuvchilar</button>
+        </aside>
+        <div class="admin-main">
+          <div id="adminDashboard"></div>
+          <div id="adminLogs" class="hidden"></div>
+          <div id="adminBlocked" class="hidden"></div>
+          <div id="adminUsers" class="hidden"></div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Kirish modali -->
+  <section class="newsletter">
+    <div class="wrap newsletter-grid">
+      <div><h2>Eng so‘nggi post va yangiliklardan xabardor bo‘ling</h2><p>Yangiliklar lentasiga obuna bo‘ling va yangi maqolalarni o‘tkazib yubormang</p></div>
+      <form onsubmit="event.preventDefault(); alert('Obuna qabul qilindi')"><input placeholder="Elektron pochtangiz"><button class="btn-blue">Yuborish</button></form>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="socials">● ▣ ◈ Be ◎</div>
+    <p>© SecureBlog. Barcha huquqlar himoyalangan.</p>
+  </footer>
+
   <div class="modal" id="loginModal">
-    <div class="modal-overlay" onclick="closeModal('loginModal')"></div>
     <div class="modal-box">
-      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
-      <h2>Kirish</h2>
-      <p class="modal-sub">Demo: admin / admin123</p>
-      <div class="form-group">
-        <label>Foydalanuvchi nomi</label>
-        <input type="text" id="loginUser" placeholder="Foydalanuvchi nomini kiriting">
-      </div>
-      <div class="form-group">
-        <label>Parol</label>
-        <input type="password" id="loginPass" placeholder="Parolni kiriting">
-      </div>
-      <div id="loginMsg" class="msg-area"></div>
-      <button class="btn-primary full" onclick="doLogin()">Kirish →</button>
+      <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+      <h2 style="text-align:center;font-weight:400;letter-spacing:.22em">Kirish</h2>
+      <p style="text-align:center;color:var(--muted)">Demo: <b>user / user123</b> yoki <b>admin / admin123</b></p>
+      <input id="loginUser" placeholder="Foydalanuvchi nomi">
+      <input id="loginPass" placeholder="Parol" type="password">
+      <div id="loginMsg" class="toast hidden"></div>
+      <button class="btn-blue" onclick="login()">Kirish</button>
     </div>
   </div>
 
-  <!-- Ro'yxatdan o'tish modali -->
   <div class="modal" id="registerModal">
-    <div class="modal-overlay" onclick="closeModal('registerModal')"></div>
     <div class="modal-box">
-      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
-      <h2>Ro'yxatdan o'tish</h2>
-      <div class="form-group">
-        <label>Foydalanuvchi nomi</label>
-        <input type="text" id="regUser" placeholder="Foydalanuvchi nomini tanlang">
-      </div>
-      <div class="form-group">
-        <label>Elektron pochta</label>
-        <input type="email" id="regEmail" placeholder="sizning@email.com">
-      </div>
-      <div class="form-group">
-        <label>Parol</label>
-        <input type="password" id="regPass" placeholder="Kamida 6 ta belgi">
-      </div>
-      <div id="regMsg" class="msg-area"></div>
-      <button class="btn-primary full" onclick="doRegister()">Hisob yaratish →</button>
+      <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+      <h2 style="text-align:center;font-weight:400;letter-spacing:.22em">Ro‘yxatdan o‘tish</h2>
+      <input id="regUser" placeholder="Foydalanuvchi nomi">
+      <input id="regEmail" placeholder="Elektron pochta" type="email">
+      <input id="regPass" placeholder="Parol" type="password">
+      <div id="regMsg" class="toast hidden"></div>
+      <button class="btn-blue" onclick="register()">Ro‘yxatdan o‘tish</button>
     </div>
   </div>
 
-  <script src="/static/js/main.js"></script>
+  <div class="modal" id="postModal">
+    <div class="modal-box wide">
+      <button class="modal-close" onclick="closeModal('postModal')">×</button>
+      <h2>Yangi post yaratish</h2>
+      <input id="postTitle" placeholder="Post sarlavhasi">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <select id="postCategory"><option value="Security">Xavfsizlik</option><option value="Product">Mahsulot</option><option value="Tutorial">Darslik</option><option value="DevOps">DevOps</option><option value="Personal">Shaxsiy</option></select>
+        <select id="postStatus"><option value="published">E’lon qilingan</option><option value="draft">Qoralama</option></select>
+      </div>
+      <div class="editor-grid">
+        <textarea id="postContent" placeholder="# Markdown post matni" oninput="updateMarkdownPreview()"></textarea>
+        <div id="markdownPreview" class="markdown-preview">Ko‘rib chiqish</div>
+      </div>
+      <label class="upload-box"><input id="postImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" onchange="previewUpload(event)"><span>Rasm yuklash</span><small>JPG, PNG, WEBP yoki GIF, max 3 MB</small></label>
+      <img id="uploadPreview" class="upload-preview hidden" alt="">
+      <div id="postMsg" class="toast hidden"></div>
+      <button class="btn-blue" onclick="createPost()">E’lon qilish</button>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let csrfToken = localStorage.getItem('csrfToken') || '';
+    let activePost = null;
+    let chatTimer = null;
+    let selectedCategory = '';
+    let selectedStatus = 'published';
+    let cachedPosts = [];
+    const $ = (id) => document.getElementById(id);
+
+    const api = async (url, options = {}) => {
+      const isForm = options.body instanceof FormData;
+      const headers = isForm ? {} : { 'Content-Type': 'application/json' };
+      if (csrfToken) headers['x-csrf-token'] = csrfToken;
+      Object.assign(headers, options.headers || {});
+      const res = await fetch(url, { credentials: 'include', ...options, headers });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.detail || data.message || 'So‘rov bajarilmadi');
+      return data;
+    };
+
+    function openModal(id) { $(id).classList.add('active'); }
+    function closeModal(id) { $(id).classList.remove('active'); }
+    function toggleMenu(force) {
+      const nav = document.querySelector('.topbar');
+      const shouldOpen = typeof force === 'boolean' ? force : !nav.classList.contains('menu-open');
+      nav.classList.toggle('menu-open', shouldOpen);
+    }
+    function show(el, text, type = 'success') { el.textContent = text; el.className = `toast ${type}`; }
+    function displayFor(el) { return el.tagName === 'BUTTON' ? 'inline-flex' : 'block'; }
+    function updateAuthUI() {
+      document.querySelectorAll('.auth-only').forEach(el => el.style.display = currentUser ? displayFor(el) : 'none');
+      document.querySelectorAll('.guest-only').forEach(el => el.style.display = currentUser ? 'none' : displayFor(el));
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = currentUser?.role === 'admin' ? displayFor(el) : 'none');
+      if ($('sessionStatus')) $('sessionStatus').textContent = currentUser ? 'Tasdiqlangan' : 'Mehmon';
+    }
+
+    function routeTo(view) {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      $(`${view}View`)?.classList.remove('hidden');
+      if (view === 'home') loadHome();
+      if (view === 'blog') loadPosts();
+      if (view === 'chat') startChat(); else stopChat();
+      if (view === 'profile') loadProfile();
+      if (view === 'admin') loadAdmin();
+      if (view === 'lab') loadHeroStats();
+      updateAuthUI();
+      toggleMenu(false);
+      history.replaceState(null, '', view === 'home' ? '/' : `/${view === 'lab' ? 'security-lab' : view}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function refreshMe() {
+      try {
+        currentUser = await api('/auth/me');
+        const token = await api('/auth/csrf');
+        csrfToken = token.csrf_token;
+        localStorage.setItem('csrfToken', csrfToken);
+      } catch {
+        currentUser = null; csrfToken = ''; localStorage.removeItem('csrfToken');
+      }
+      updateAuthUI();
+    }
+
+    async function login() {
+      try {
+        const data = await api('/auth/login', { method: 'POST', body: JSON.stringify({ username: $('loginUser').value, password: $('loginPass').value }) });
+        csrfToken = data.csrf_token; localStorage.setItem('csrfToken', csrfToken);
+        await refreshMe(); closeModal('loginModal'); routeTo('home');
+      } catch (e) { show($('loginMsg'), e.message, 'danger'); }
+    }
+    async function register() {
+      try {
+        await api('/auth/register', { method: 'POST', body: JSON.stringify({ username: $('regUser').value, email: $('regEmail').value, password: $('regPass').value }) });
+        await refreshMe(); closeModal('registerModal'); routeTo('blog');
+      } catch (e) { show($('regMsg'), e.message, 'danger'); }
+    }
+    async function logout() {
+      await api('/auth/logout', { method: 'POST' }).catch(() => {});
+      currentUser = null; csrfToken = ''; localStorage.removeItem('csrfToken');
+      updateAuthUI(); routeTo('home');
+    }
+
+    async function loadHeroStats() {
+      try { $('heroAttackCount').textContent = (await api('/dashboard/stats')).total || 0; } catch {}
+    }
+    async function getPosts(params = '') {
+      const posts = await api(`/blog/posts${params}`);
+      cachedPosts = posts;
+      renderSidebar('blogSidebar', posts);
+      renderSidebar('detailSidebar', posts);
+      return posts;
+    }
+    async function loadHome() {
+      const posts = await getPosts('?status=published');
+      $('homePostGrid').innerHTML = posts.slice(0,4).map(postCard).join('') || '<div class="post-card post-body">Post yo‘q.</div>';
+      $('recentPostGrid').innerHTML = posts.slice(0,4).map(recentCard).join('') || '<div class="post-card post-body">Post yo‘q.</div>';
+      loadHeroStats();
+    }
+    async function loadPosts() {
+      const q = encodeURIComponent($('searchInput')?.value || '');
+      const category = encodeURIComponent(selectedCategory);
+      try {
+        const posts = await getPosts(`?q=${q}&category=${category}&status=${selectedStatus}`);
+        $('postGrid').innerHTML = posts.map(postCard).join('') || '<div class="post-card post-body">Postlar topilmadi.</div>';
+      } catch (e) { $('postGrid').innerHTML = `<div class="toast danger">${e.message}</div>`; }
+    }
+    function postCard(p) {
+      return `<article class="post-card" onclick="openPost(${p.id})">
+        <div class="post-img-wrap"><img src="${p.image_url || fallbackImage(p.id)}" alt=""><span class="post-date">${formatDate(p.created_at, true)}</span></div>
+        <div class="post-body">
+          <div class="post-row"><h3 class="post-title">${p.title}</h3><span class="post-cat">${labelCategory(p.category || 'Journal')}</span></div>
+          <p>${stripMarkdown(p.content).slice(0, 145)}...</p>
+          <div class="post-foot"><span>♟ ${p.username}</span><span>Batafsil...</span></div>
+        </div>
+      </article>`;
+    }
+    function recentCard(p) {
+      return `<article class="post-card post-body" onclick="openPost(${p.id})">
+        <div class="post-row"><h3 class="post-title">${p.title}</h3><span class="post-cat">${labelCategory(p.category || 'Journal')}</span></div>
+        <p>${stripMarkdown(p.content).slice(0, 120)}...</p>
+        <div class="post-foot"><span>♟ ${p.username}</span><span>Batafsil...</span></div>
+      </article>`;
+    }
+    function renderSidebar(id, posts = cachedPosts) {
+      const el = $(id); if (!el) return;
+      const categories = posts.reduce((acc, p) => { acc[p.category || 'Journal'] = (acc[p.category || 'Journal'] || 0) + 1; return acc; }, {});
+      el.innerHTML = `<div class="side-card"><div class="search-box"><input id="${id}Search" placeholder="Qidirish"><button class="btn-blue" onclick="$('searchInput') && ($('searchInput').value=$('${id}Search').value, routeTo('blog'))">Qidirish</button></div></div>
+      <div class="side-card sidebar-profile"><img src="${currentUser?.avatar_url || defaultAvatar(currentUser?.username || 'SecureBlog')}" alt=""><h3>${currentUser?.username || 'SecureBlog'}</h3><div class="side-line"></div><p>Blog, chat va xavfsizlik laboratoriyasi bitta zamonaviy web sayt ichida.</p><button class="mini-btn" onclick="routeTo(currentUser ? 'profile' : 'about')">Batafsil</button></div>
+      <div class="side-card"><h3>Bizni kuzating</h3><div class="side-line"></div><div style="font-size:1.4rem;letter-spacing:.65em;color:var(--ink)">● ▣ ◈ Be ◎</div></div>
+      <div class="side-card"><h3>Mashhur postlar</h3><div class="side-line"></div>${posts.slice(0,4).map(p => `<div class="mini-post" onclick="openPost(${p.id})"><img src="${p.image_url || fallbackImage(p.id)}"><div><b>${p.title}</b><span>${formatDate(p.created_at, false)}</span></div></div>`).join('') || '<p>Postlar yo‘q</p>'}</div>
+      <div class="side-card"><h3>Kategoriyalar</h3><div class="side-line"></div><div class="category-list">${Object.entries(categories).map(([name, count]) => `<button onclick="setCategory('${name}')"><span>${labelCategory(name)}</span><b class="count">${count}</b></button>`).join('') || '<button>Kategoriya yo‘q</button>'}</div></div>`;
+    }
+    function setCategory(category, button) {
+      selectedCategory = category; selectedStatus = 'published';
+      document.querySelectorAll('#categoryPills button').forEach(btn => btn.classList.remove('active'));
+      if (button) button.classList.add('active');
+      routeTo('blog');
+    }
+    function setDrafts(button) {
+      selectedCategory = ''; selectedStatus = 'drafts';
+      document.querySelectorAll('#categoryPills button').forEach(btn => btn.classList.remove('active'));
+      if (button) button.classList.add('active');
+      routeTo('blog');
+    }
+    async function openPost(id) {
+      activePost = id;
+      const data = await api(`/blog/posts/${id}`);
+      $('postDetail').innerHTML = `<img src="${data.post.image_url || fallbackImage(id)}" alt="">
+        <div class="post-row"><span class="post-cat">${labelCategory(data.post.category || 'Journal')}</span><span>${formatDate(data.post.created_at, false)}</span></div>
+        <h1>${data.post.title}</h1>
+        <div class="markdown-content">${renderMarkdown(data.post.content)}</div>
+        <div class="reaction-row auth-only"><button class="mini-btn" onclick="reactPost(${id}, 'like')">Yoqdi (${data.post.like_count || 0})</button><button class="mini-btn" onclick="reactPost(${id}, 'bookmark')">Saqlash (${data.post.bookmark_count || 0})</button></div>`;
+      $('commentList').innerHTML = data.comments.map(c => `<div class="comment-card"><b>♟ ${c.author || c.username || 'anonim'} - ${formatDate(c.created_at, false)}</b><p>${c.comment}</p><button class="mini-btn">Javob berish</button></div>`).join('') || '';
+      routeTo('detail');
+    }
+    async function reactPost(postId, reactionType) {
+      try { await api(`/blog/posts/${postId}/react`, { method: 'POST', body: JSON.stringify({ reaction_type: reactionType }) }); openPost(postId); } catch (e) { alert(e.message); }
+    }
+    async function addComment() {
+      try {
+        await api(`/blog/posts/${activePost}/comments`, { method: 'POST', body: JSON.stringify({ comment: $('commentInput').value }) });
+        $('commentInput').value = ''; openPost(activePost);
+      } catch (e) { alert(e.message); }
+    }
+    function previewUpload(event) {
+      const file = event.target.files[0]; if (!file) return;
+      $('uploadPreview').src = URL.createObjectURL(file); $('uploadPreview').classList.remove('hidden');
+    }
+    async function createPost() {
+      try {
+        let imageUrl = '';
+        const file = $('postImage').files[0];
+        if (file) { const form = new FormData(); form.append('image', file); imageUrl = (await api('/blog/uploads', { method: 'POST', body: form })).image_url; }
+        const data = await api('/blog/posts', { method: 'POST', body: JSON.stringify({ title: $('postTitle').value, content: $('postContent').value, image_url: imageUrl, category: $('postCategory').value, status: $('postStatus').value }) });
+        closeModal('postModal'); $('postTitle').value = ''; $('postContent').value = ''; $('postImage').value = ''; $('uploadPreview').classList.add('hidden'); updateMarkdownPreview(); openPost(data.id);
+      } catch (e) { show($('postMsg'), e.message, 'danger'); }
+    }
+
+    async function runSecurityTest(type, payloadId) {
+      try { const data = await api('/blog/security-test', { method: 'POST', body: JSON.stringify({ attack_type: type, payload: $(payloadId).value }) }); show($('labResult'), `${data.message} O‘quv bali yangilandi.`, 'success'); loadHeroStats(); }
+      catch (e) { show($('labResult'), e.message, 'danger'); loadHeroStats(); }
+    }
+    async function runCsrfTest() {
+      try { await api('/blog/security-test', { method: 'POST', headers: { 'x-csrf-token': $('csrfPayload').value }, body: JSON.stringify({ attack_type: 'CSRF', payload: $('csrfPayload').value }) }); }
+      catch (e) { show($('labResult'), `CSRF bloklandi: ${e.message}`, 'danger'); loadHeroStats(); }
+    }
+
+    async function loadChat() {
+      try {
+        const messages = await api('/blog/chat');
+        $('chatMessages').innerHTML = messages.map(m => `<div class="comment-card" style="margin:0"><b>${m.username} - ${formatDate(m.created_at,false)}</b><p>${m.message}</p></div>`).join('') || '<p>Hali xabar yo‘q.</p>';
+        $('chatMessages').scrollTop = $('chatMessages').scrollHeight;
+      } catch {}
+    }
+    function startChat() { loadChat(); clearInterval(chatTimer); chatTimer = setInterval(loadChat, 3500); }
+    function stopChat() { clearInterval(chatTimer); chatTimer = null; }
+    async function sendChat() {
+      if (!$('chatInput').value.trim()) return;
+      try { await api('/blog/chat', { method: 'POST', body: JSON.stringify({ message: $('chatInput').value }) }); $('chatInput').value = ''; loadChat(); } catch (e) { alert(e.message); }
+    }
+
+    async function loadProfile() {
+      try {
+        const p = await api('/blog/profile');
+        $('profileContent').innerHTML = `<div class="user-hero"><div class="user-photo-frame"><img src="${p.user.avatar_url || defaultAvatar(p.user.username)}" alt=""></div><div><div class="section-title" style="text-align:left;margin:0 0 24px"><h1>Profil</h1><div class="title-line" style="margin-left:0"></div></div><p style="color:var(--muted)">Foydalanuvchi nomi: ${p.user.username}<br>Elektron pochta: ${p.user.email}<br>O‘quv bali: ${p.user.score || 0}</p><p style="color:var(--muted)">Postlar: ${p.posts.length}. Saqlanganlar: ${p.bookmarks.length}. Xavfsizlik loglari: ${p.attacks.length}.</p><div class="profile-actions"><label class="btn-blue">Avatar <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onchange="uploadAvatar(event)" style="display:none"></label><button class="btn-blue" onclick="openModal('postModal')">Yangi post</button></div></div></div><div class="profile-grid" style="margin-top:40px"><div class="admin-card" style="padding:20px"><h3>Bildirishnomalar</h3>${p.notifications.map(n => `<p>${n.message}</p>`).join('') || '<p>Yangi bildirishnoma yo‘q.</p>'}</div><div class="admin-card" style="padding:20px"><h3>Saqlangan postlar</h3>${p.bookmarks.map(b => `<p>${b.title}</p>`).join('') || '<p>Saqlangan post yo‘q.</p>'}</div></div>`;
+      } catch (e) { $('profileContent').innerHTML = `<div class="toast danger">${e.message}</div>`; }
+    }
+    async function uploadAvatar(event) {
+      const file = event.target.files[0]; if (!file) return;
+      try { const form = new FormData(); form.append('image', file); await api('/blog/avatar', { method: 'POST', body: form }); await refreshMe(); loadProfile(); } catch (e) { alert(e.message); }
+    }
+
+    async function loadAdmin() { adminTab('dashboard'); }
+    function hideAdminPanels() { ['adminDashboard','adminLogs','adminBlocked','adminUsers'].forEach(id => $(id).classList.add('hidden')); }
+    async function adminTab(tab) {
+      hideAdminPanels();
+      if (tab === 'dashboard') {
+        const d = await api('/admin/api/dashboard');
+        $('adminDashboard').classList.remove('hidden');
+        $('adminDashboard').innerHTML = `<div class="stats-grid">${Object.entries(d.stats).map(([k,v]) => `<div class="stat-card"><span>${labelStat(k)}</span><b>${v}</b></div>`).join('')}</div><div class="analytics-grid"><div class="chart-card"><h3>Hujum turlari</h3>${renderBarRows(d.attack_types,'attack_type')}</div><div class="chart-card"><h3>Kategoriyalar</h3>${renderBarRows(d.categories,'category')}</div><div class="chart-card"><h3>Kunlik hujumlar</h3>${renderBarRows(d.daily_attacks,'day')}</div></div><div class="admin-card" style="padding:20px">${table(d.recent_attacks)}</div>`;
+      }
+      if (tab === 'logs') {
+        $('adminLogs').classList.remove('hidden');
+        $('adminLogs').innerHTML = `<div class="admin-card" style="padding:20px"><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px"><select id="fType"><option value="">Hujum turi</option><option>XSS</option><option>SQL Injection</option><option>CSRF</option><option value="Blocked Login">Bloklangan login</option></select><input id="fUser" placeholder="foydalanuvchi"><select id="fStatus"><option value="">holat</option><option value="detected">aniqlandi</option><option value="blocked">bloklandi</option></select><input id="fDate" type="date"><button class="btn-blue" onclick="loadLogs()">Filtrlash</button></div><div id="logTable"></div></div>`; loadLogs();
+      }
+      if (tab === 'blocked') {
+        const users = await api('/admin/api/blocked-users');
+        $('adminBlocked').classList.remove('hidden');
+        $('adminBlocked').innerHTML = `<div class="admin-card" style="padding:20px">${users.map(u => `<div class="user-row"><span>${u.username} - ${u.email} - ${u.attack_count} ta hujum</span><button class="btn-blue" onclick="unblockUser(${u.id})">Blokdan chiqarish</button></div>`).join('') || 'Bloklangan foydalanuvchi yo‘q'}</div>`;
+      }
+      if (tab === 'users') {
+        const users = await api('/admin/api/users');
+        $('adminUsers').classList.remove('hidden');
+        $('adminUsers').innerHTML = `<div class="admin-card" style="padding:20px">${users.map(u => `<div class="user-row"><span>${u.username} (${u.email})</span><span class="badge ${u.is_blocked ? 'blocked' : ''}">${u.is_blocked ? 'bloklangan' : 'faol'}</span><button onclick="showUser(${u.id})">Batafsil</button><button class="btn-danger" onclick="blockUser(${u.id})">Bloklash</button></div>`).join('')}<div id="userDetail"></div></div>`;
+      }
+    }
+    async function loadLogs() {
+      const qs = new URLSearchParams({ attack_type: $('fType').value, username: $('fUser').value, status: $('fStatus').value, date: $('fDate').value });
+      $('logTable').innerHTML = table(await api(`/admin/api/attack-logs?${qs}`));
+    }
+    async function blockUser(id) { await api(`/admin/api/users/${id}/block`, { method: 'POST', body: JSON.stringify({ reason: 'Admin foydalanuvchini qo‘lda blokladi' }) }); adminTab('users'); }
+    async function unblockUser(id) { await api(`/admin/api/users/${id}/unblock`, { method: 'POST', body: '{}' }); adminTab('blocked'); }
+    async function showUser(id) { const d = await api(`/admin/api/users/${id}`); $('userDetail').innerHTML = `<div class="admin-card" style="padding:20px;margin-top:16px"><h3>${d.user.username}</h3><p>${d.user.email}</p><h4>Postlar</h4>${d.posts.map(p => `<p>${p.title}</p>`).join('') || '-'}<h4>Izohlar</h4>${d.comments.map(c => `<p>${c.comment}</p>`).join('') || '-'}<h4>Hujum loglari</h4>${table(d.attacks)}</div>`; }
+
+    function table(rows) {
+      if (!rows || !rows.length) return '<p>Ma’lumot yo‘q.</p>';
+      const keys = Object.keys(rows[0]).slice(1, 9);
+      return `<div class="table-wrap"><table><thead><tr>${keys.map(k => `<th>${labelColumn(k)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${keys.map(k => `<td>${formatCell(k, r[k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    }
+    function renderBarRows(rows, labelKey) {
+      if (!rows || !rows.length) return '<p>Ma’lumot yo‘q.</p>';
+      const max = Math.max(...rows.map(r => r.count || 0), 1);
+      return rows.map(r => `<div class="bar-row"><span>${labelCategory(r[labelKey] || 'noma’lum')}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.max(7, ((r.count || 0) / max) * 100)}%"></div></div><b>${r.count || 0}</b></div>`).join('');
+    }
+    function labelCategory(value) {
+      const labels = {
+        Security: 'Xavfsizlik',
+        Product: 'Mahsulot',
+        Tutorial: 'Darslik',
+        Personal: 'Shaxsiy',
+        Journal: 'Jurnal',
+        'Life Style': 'Hayot tarzi',
+        Education: 'Ta’lim',
+        unknown: 'noma’lum'
+      };
+      return labels[value] || value || 'noma’lum';
+    }
+    function labelStat(key) {
+      const labels = {
+        users: 'Jami foydalanuvchilar',
+        posts: 'Jami postlar',
+        attacks: 'Aniqlangan hujumlar',
+        blocked_users: 'Bloklangan foydalanuvchilar',
+        comments: 'Jami izohlar',
+        total_users: 'Jami foydalanuvchilar',
+        total_posts: 'Jami postlar',
+        total_attacks: 'Aniqlangan hujumlar'
+      };
+      return labels[key] || String(key).replaceAll('_', ' ');
+    }
+    function labelColumn(key) {
+      const labels = {
+        username: 'Foydalanuvchi',
+        ip_address: 'IP manzil',
+        attack_type: 'Hujum turi',
+        payload: 'Payload',
+        endpoint: 'Endpoint',
+        risk_level: 'Xavf darajasi',
+        status: 'Holat',
+        created_at: 'Sana va vaqt',
+        email: 'Elektron pochta',
+        is_blocked: 'Bloklangan',
+        blocked_at: 'Bloklangan sana',
+        block_reason: 'Bloklanish sababi',
+        attack_count: 'Hujumlar soni'
+      };
+      return labels[key] || String(key).replaceAll('_', ' ');
+    }
+    function formatCell(key, value) {
+      if (value === null || value === undefined) return '';
+      const map = {
+        detected: 'aniqlandi',
+        blocked: 'bloklandi',
+        active: 'faol',
+        high: 'yuqori',
+        medium: 'o‘rta',
+        low: 'past',
+        true: 'ha',
+        false: 'yo‘q'
+      };
+      if (key === 'created_at' || key === 'blocked_at') return formatDate(value, false);
+      return map[String(value)] || value;
+    }
+    function fallbackImage(id) {
+      const imgs = [
+        'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80'
+      ];
+      return imgs[id % imgs.length];
+    }
+    function defaultAvatar(seed) { return `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(seed || 'foydalanuvchi')}&backgroundColor=000000&textColor=ffffff`; }
+    function stripMarkdown(text) { return String(text || '').replace(/```[\s\S]*?```/g, ' code ').replace(/[#>*_`-]/g, '').replace(/\[(.*?)\]\(.*?\)/g, '$1').trim(); }
+    function escapeHtml(text) { return String(text || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;"); }
+    function renderMarkdown(text) {
+      const safe = escapeHtml(text || '');
+      return safe.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>').split('\n').map(line => {
+        if (line.startsWith('# ')) return `<h2>${line.slice(2)}</h2>`;
+        if (line.startsWith('## ')) return `<h3>${line.slice(3)}</h3>`;
+        if (line.startsWith('- ')) return `<p>• ${line.slice(2)}</p>`;
+        if (!line.trim() || line.startsWith('<pre>')) return line;
+        return `<p>${line.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/`(.*?)`/g, '<code>$1</code>')}</p>`;
+      }).join('');
+    }
+    function updateMarkdownPreview() { if ($('markdownPreview')) $('markdownPreview').innerHTML = renderMarkdown($('postContent')?.value || 'Ko‘rib chiqish'); }
+    function formatDate(value, short) {
+      const date = new Date(value);
+      return short ? date.toLocaleDateString('uz-UZ', { month: 'long', day: 'numeric', year: 'numeric' }) : date.toLocaleString('uz-UZ', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await refreshMe(); updateMarkdownPreview();
+      const path = location.pathname;
+      if (path === '/admin') routeTo('admin');
+      else if (path === '/security-lab') routeTo('lab');
+      else if (path === '/profile') routeTo('profile');
+      else if (path === '/chat') routeTo('chat');
+      else if (path === '/about') routeTo('about');
+      else if (path === '/blog') routeTo('blog');
+      else routeTo('home');
+    });
+  </script>
 </body>
 </html>
