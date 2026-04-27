@@ -18,8 +18,8 @@
   --text-dim: #3d4f63;
   --border: rgba(255,255,255,0.06);
   --border-glow: rgba(0,255,136,0.2);
-  --font-mono: 'Space Mono', monospace;
-  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Inter', Arial, sans-serif;
+  --font-display: 'Inter', Arial, sans-serif;
   --radius: 12px;
   --radius-sm: 6px;
 }
@@ -34,6 +34,11 @@ body {
   font-family: var(--font-display);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+body, body * {
+  letter-spacing: normal !important;
+  text-transform: none !important;
 }
 
 /* Scanline effect */

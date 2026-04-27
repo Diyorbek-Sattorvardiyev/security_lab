@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SecureBlog - Zamonaviy blog va xavfsizlik test laboratoriyasi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --page: #edf4f8;
@@ -18,8 +18,8 @@
       --line: #dfeaf2;
       --shadow: 0 12px 30px rgba(54, 87, 112, .16);
       --radius: 7px;
-      --mono: "Space Mono", monospace;
-      --sans: "Poppins", sans-serif;
+      --mono: "Inter", Arial, sans-serif;
+      --sans: "Inter", Arial, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,6 +30,10 @@
       color: var(--ink);
       font-family: var(--sans);
       line-height: 1.65;
+    }
+    body, body * {
+      letter-spacing: normal !important;
+      text-transform: none !important;
     }
     button, input, textarea, select { font: inherit; }
     button { cursor: pointer; }
@@ -636,7 +640,7 @@
       <div class="hero-home">
         <div class="wrap hero-grid">
           <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80" alt="Blog manzarasi">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1100&q=80" alt="Kiberxavfsizlik laboratoriyasi">
           </div>
           <div class="hero-copy">
             <h1>Xavfsiz blog yuritishni qanday o‘rganish mumkin?</h1>
@@ -651,12 +655,12 @@
         <div class="wrap">
           <div class="section-title"><h2>Mashhur postlar</h2><div class="title-line"></div></div>
           <div class="popular-mosaic">
-            <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80" alt="">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Kod va xavfsiz blog platformasi">
             <div class="mosaic-right">
-              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80" alt="">
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80" alt="Server monitoringi">
               <div class="mosaic-bottom">
-                <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=700&q=80" alt="">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=700&q=80" alt="">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80" alt="Raqamli himoya">
+                <img src="https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=700&q=80" alt="Xavfsizlik tahlili">
               </div>
             </div>
           </div>
@@ -700,9 +704,9 @@
         <div class="section-title"><h1>Aloqa</h1><div class="title-line"></div></div>
         <div class="contact-grid">
           <div class="contact-info">
-            <h3>▸ Manzil</h3><p>Toshkent, O‘zbekiston</p>
-            <h3>✉ Elektron pochta</h3><p>secureblog@example.com</p>
-            <h3>☏ Telefon</h3><p>+998 90 000 00 00</p>
+            <h3>▸ Manzil</h3><p>Buxoro</p>
+            <h3>✉ Elektron pochta</h3><p>navrozovnozimjon760@gmail.com</p>
+            <h3>☏ Telefon</h3><p>+998 97 899 72 22</p>
           </div>
           <form class="contact-card auth-card" onsubmit="event.preventDefault(); alert('Xabaringiz qabul qilindi');">
             <h2>Biz bilan bog‘laning</h2>
@@ -1178,10 +1182,10 @@
     }
     function fallbackImage(id) {
       const imgs = [
-        'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
-        'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80'
+        'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80',
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80'
       ];
       return imgs[id % imgs.length];
     }

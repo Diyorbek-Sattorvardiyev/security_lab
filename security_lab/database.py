@@ -144,11 +144,11 @@ def init_db():
         )
         cursor.execute(
             "UPDATE users SET avatar_url=COALESCE(avatar_url, ?) WHERE username='admin'",
-            ("https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=256&q=80",),
+            ("https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=256&q=80",),
         )
         cursor.execute(
             "UPDATE users SET avatar_url=COALESCE(avatar_url, ?) WHERE username='user'",
-            ("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",),
+            ("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=256&q=80",),
         )
     except Exception as e:
         print(f"Demo user error: {e}")
@@ -163,7 +163,7 @@ def init_db():
                 admin["id"],
                 "SecureBlog: xavfsiz kontent platformasi",
                 "# SecureBlog\n\nSecureBlog zamonaviy blog tajribasi, real vaqt chat va xavfsizlik monitoringini bitta mahsulotga jamlaydi.\n\n- Xavfsiz autentifikatsiya\n- Rasmli postlar\n- Admin monitoring",
-                "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+                "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
                 "Security",
                 "published",
             ),
@@ -176,11 +176,20 @@ def init_db():
                 user["id"],
                 "Jamoa bilan chatlashish va rasmli postlar",
                 "Postga rasm yuklash, fikr qoldirish va umumiy chat orqali suhbatlashish blogni jonli mahsulotga aylantiradi.\n\n```python\nprint('secure publishing')\n```",
-                "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+                "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
                 "Product",
                 "published",
             ),
         )
+
+    cursor.execute(
+        "UPDATE posts SET image_url=? WHERE id=1",
+        ("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",),
+    )
+    cursor.execute(
+        "UPDATE posts SET image_url=? WHERE id=2",
+        ("https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",),
+    )
 
     conn.commit()
     conn.close()
